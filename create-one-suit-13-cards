@@ -26,12 +26,21 @@ class Deck(Cards):
     return new_number
   
   def create_deck(self):
+    number_of_suit = []
     new_card = self.get_card()
-    while len(deck_of_cards) < 14:
+    while len(number_of_suit) < 14:
       if new_card is not deck_of_cards:
-        new_card.append(deck_of_cards)
+        deck_of_cards.append(new_card)
       else:
         new_card = self.get_card()
+        
+        
+        
+c1 = Card('clubs')
+c2 = Card('spades')
+c3 = Card('diamonds')
+c4 = Card('Hearts')
+c1.create_deck
       
     
    

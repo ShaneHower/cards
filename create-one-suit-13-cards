@@ -31,6 +31,8 @@ class Deck(Cards):
     while len(number_of_suit) < 14:
       if new_card is not deck_of_cards:
         deck_of_cards.append(new_card)
+        print(deck_of_cards)
+        print(len(number_of_suit))
       else:
         new_card = self.get_card()
         

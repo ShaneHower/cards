@@ -1,0 +1,37 @@
+import randint from random
+
+deck_of_cards = []
+class Cards:
+  def __init__(self, suit):
+    self.suit = suit
+    self.number = 0
+  def get_card(self):
+    self.number = self.assign_value()
+    return str(self.number) + ' of ' + str(self.suit)
+    
+class Deck(Cards):
+  def __init__(self, suit):
+    Cards.__init__(self, suit)
+    
+  def assign_value(self):
+    new_number = randint(1,13)
+    if new_number == 1:
+      new_number = 'Ace'
+    elif new_number == 11:
+      new_number = 'Jack'
+    elif new_number ==12:
+      new_number = 'Queen'
+    elif new_number == 13:
+      new_number = 'King'
+    return new_number
+  
+  def create_deck(self):
+    new_card = self.get_card()
+    while len(deck_of_cards) < 14:
+      if new_card is not deck_of_cards:
+        new_card.append(deck_of_cards)
+      else:
+        new_card = self.get_card()
+      
+    
+   

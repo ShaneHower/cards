@@ -42,7 +42,9 @@ c1 = Card('clubs')
 c2 = Card('spades')
 c3 = Card('diamonds')
 c4 = Card('Hearts')
-c1.create_deck
-      
+c1.create_deck()
+c2.create_deck()
+c3.create_deck()
+c4.create_deck()
     
    

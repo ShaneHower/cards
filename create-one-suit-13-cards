@@ -1,50 +1,60 @@
-import randint from random
+import random
+from random import randint
 
 deck_of_cards = []
-class Cards:
-  def __init__(self, suit):
-    self.suit = suit
-    self.number = 0
-  def get_card(self):
-    self.number = self.assign_value()
-    return str(self.number) + ' of ' + str(self.suit)
+class Card:
+    def __init__(self, suit):
+        self.suit = suit
+        self.number = 0
     
-class Deck(Cards):
-  def __init__(self, suit):
-    Cards.__init__(self, suit)
+    def get_number(self):
+        self.number = self.assign_value()
+        new_card = str(self.number) + ' of ' + str(self.suit)
+        return new_card
+        
+           
+class Deck(Card):
+    def __init__(self,suit):
+        Card.__init__(self, suit)
     
-  def assign_value(self):
-    new_number = randint(1,13)
-    if new_number == 1:
-      new_number = 'Ace'
-    elif new_number == 11:
-      new_number = 'Jack'
-    elif new_number ==12:
-      new_number = 'Queen'
-    elif new_number == 13:
-      new_number = 'King'
-    return new_number
-  
-  def create_deck(self):
-    number_of_suit = []
-    new_card = self.get_card()
-    while len(number_of_suit) < 14:
-      if new_card is not deck_of_cards:
-        deck_of_cards.append(new_card)
-        print(deck_of_cards)
-        print(len(number_of_suit))
-      else:
-        new_card = self.get_card()
+    def assign_value(self):
+        new_card = randint(1,13)
+        if new_card == 1:
+            new_card = 'Ace'
+        elif new_card == 11:
+            new_card = 'Jack'
+        elif new_card == 12:
+            new_card = 'Queen'
+        elif new_card == 13:
+            new_card = 'King'
+        return new_card
+    
+    def create_deck(self):
+        number_of_suit = []
+        new_card = self.get_number()
+        print(new_card)
+        while len(number_of_suit)<= 13:
+            if new_card in deck_of_cards:
+                new_card = self.get_number()
+            else:
+                deck_of_cards.append(new_card)
+                number_of_suit.append(str(self.suit))        
+                print(len(number_of_suit))
+            
+    
+                  
         
-        
-        
-c1 = Card('clubs')
-c2 = Card('spades')
-c3 = Card('diamonds')
-c4 = Card('Hearts')
+c1 = Deck('clubs')
+c2 = Deck('spades')
+c3 = Deck('hearts')
+c4 = Deck('diamonds')
+
 c1.create_deck()
 c2.create_deck()
 c3.create_deck()
 c4.create_deck()
+
+print(deck_of_cards)
+
     
    

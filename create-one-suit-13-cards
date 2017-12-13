@@ -33,13 +33,13 @@ class Deck(Card):
         number_of_suit = []
         new_card = self.get_number()
         print(new_card)
-        while len(number_of_suit)<= 13:
+        while len(number_of_suit)<= 12:
             if new_card in deck_of_cards:
                 new_card = self.get_number()
             else:
                 deck_of_cards.append(new_card)
                 number_of_suit.append(str(self.suit))        
-                print(len(number_of_suit))
+               
             
     
                   

@@ -1,5 +1,10 @@
 import random
 from random import randint
+from collections import *
+
+#this is important for jugding the hand a player recieves later
+class OrderedCounter(Counter, OrderedDict):
+    pass
 
 deck_of_cards = []
 class Card:
@@ -20,13 +25,13 @@ class Deck(Card):
     def assign_value(self):
         new_card = randint(1,13)
         if new_card == 1:
-            new_card = 'Ace'
+            new_card = 'ace'
         elif new_card == 11:
-            new_card = 'Jack'
+            new_card = 'jack'
         elif new_card == 12:
-            new_card = 'Queen'
+            new_card = 'queen'
         elif new_card == 13:
-            new_card = 'King'
+            new_card = 'king'
         return new_card
     
     def create_deck(self):
@@ -39,11 +44,88 @@ class Deck(Card):
             else:
                 deck_of_cards.append(new_card)
                 number_of_suit.append(str(self.suit))        
-               
+                print(len(number_of_suit))
             
     
                   
+class PlayerHand:
+    def __init__(self, card_num):
+        self.card_num = card_num
+    
+    def get_hand(self):
+        hand = []
+        draw_card = random.choice(deck_of_cards)
+        while len(hand) < int(self.card_num):
+            if draw_card not in hand:
+                hand.append(draw_card)
+                deck_of_cards.remove(draw_card)   #can use a boolean argument for this part so I'm not changing the deck list
+            else:
+                draw_card = random.choice(deck_of_cards)
+        return hand
+
+    
+    
+    
+    
+class Replace(PlayerHand):
+    def __init__(self, card_num):
+        PlayerHand.__init__(self, card_num)
         
+    def replace_cards(self):
+        x=1
+        hand = self.get_hand()
+        print(hand)
+        number_cards = int(input('how many cards would you like to discard?:'))
+        if number_cards == 5:
+            hand = self.get_hand()
+        else:
+            while x <= number_cards:
+                replace_card = input('which card would you like to replace (one at a time please)?')
+                for i in hand:
+                    if replace_card == i:
+                        hand.remove(i)
+                        hand.append(random.choice(deck_of_cards))
+                x= x+1
+        print(hand)
+        #split the hand into a string then split the string to isolate words and get rid of 'of'. rejoin and resplit to isolate words.
+        hand =' '.join(hand)
+        hand = hand.split('of')
+        hand = ' '.join(hand)
+        #this is the hand without the ofs
+        hand = hand.split()
+        #now split into two new lists one containing only the number values.  Another containing only suits
+        hand_numbers = hand[0::2]
+        hand_suit = hand[1::2]
+        #had to create a new class OrderedCouter because Counter does not oreder the dictionary and therefore I can't isolate values using dictionary commands
+        count_numbers = OrderedCounter(hand_numbers)
+        count_suit = OrderedCounter(hand_suit)
+        print(count_numbers)
+        print(count_suit)
+        #still figuring out this part 
+        for i in hand:
+            if i == 'jack' or 'king' or 'queen' or 'ace':
+                if count_numbers[i] == 2:
+                    #this is an issue want to now count the pair I've already counted can probably fix this by creating and empty list
+                    for j in hand:
+                        if count_numbers[j] == 2:
+                            print('2 pair')
+                        elif count_numbers[j] == 3:
+                            print('Full House!')
+                    print('2 of a kind')
+                elif count_numbers[i] == 3:
+                    for j in hand:
+                        if count_number[j] == 2:
+                            print('Full House!')
+                    print('3 of a kind!')
+                elif count_numbers[i] == 4:
+                    print('4 of a kinda!')
+            elif count_suit[i] == 5:
+                print('Flush!')
+                
+                    
+
+        
+            
 c1 = Deck('clubs')
 c2 = Deck('spades')
 c3 = Deck('hearts')
@@ -54,7 +136,10 @@ c2.create_deck()
 c3.create_deck()
 c4.create_deck()
 
-print(deck_of_cards)
+p1 = Replace(5).replace_cards()
+#p1.replace_cards()
+
+print(p1)
 
     
    

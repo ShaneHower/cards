@@ -11,25 +11,5 @@ class Card:
         self.number = self.assign_value()
         new_card = str(self.number) + ' of ' + str(self.suit)
         return new_card
-
-
-class Deck(Card):
-    def __init__(self, suit):
-        Card.__init__(self, suit)
-
-    def assign_value(self):
-        new_card = randint(1, 13)
-        if new_card == 1:
-            new_card = 'ace'
-          ...
-        return new_card
-
-    def create_deck(self):
-        new_card = self.get_number()
-        while len(number_of_suit) <= 12:
-            if new_card in deck_of_cards:
-                new_card = self.get_number()
-            else:
-                deck_of_cards.append(new_card)
-                
+ 
  ```

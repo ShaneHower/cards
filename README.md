@@ -1,2 +1,2 @@
 # cards
-an exercise in understanding classes 
+an exercise classes 

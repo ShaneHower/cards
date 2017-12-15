@@ -81,8 +81,8 @@ class Replace(PlayerHand):
         print(hand)
         number_cards = int(input('how many cards would you like to discard?:'))
         if number_cards == 5:
-            hand = ['ace of clubs', '7 of clubs', 'ace of spades', '8 of hearts', '3 of clubs']
-            #hand = self.get_hand()
+            #hand = ['jack of diamonds', 'jack of spades', 'queen of spades', 'king of hearts', 'jack of hearts']
+            hand = self.get_hand()
         else:
             while x <= number_cards:
                 replace_card = input('which card would you like to replace (one at a time please)?')
@@ -112,10 +112,9 @@ class Replace(PlayerHand):
             if count_numbers[i] == 2:
                 hand_reveal.append('2 of a kind!') 
                 hand_numbers.remove(i)
-                print(hand_numbers)
+                count_numbers = OrderedCounter(hand_numbers)
             elif count_numbers[i] == 3:
                 hand_reveal.append('3 of a kind!')
-                hand_numbers.remove(i)
                 hand_numbers.remove(i)              
             elif count_numbers[i] == 4:
                 hand_reveal.append('4 of a kind!')
@@ -126,7 +125,7 @@ class Replace(PlayerHand):
                 break
                     
             
-        print(hand_reveal)
+        #print(hand_reveal)
         if len(hand_reveal)>1:
             if (hand_reveal[0] == '2 of a kind!' and hand_reveal[1] == '3 of a kind!') or (hand_reveal[0] == '3 of a kind!' and hand_reveal[1] == '2 of a kind!'):
                 print('Full House')
@@ -136,6 +135,8 @@ class Replace(PlayerHand):
                 print('Straight Flush!')
             elif (hand_reveal[0] == 'Flush' and hand_reveal[1] == 'Royal') or (hand_reveal[0] == 'Royal' and hand_reveal[1] == 'Flush'):
                 print('Royal Flush!')
+            elif hand_reveal[0] == '3 of a kind!' and hand_reveal[1] == '3 of a kind!':
+                print('3 of a kind')
         else:
             print(''.join(hand_reveal))
                             
@@ -156,5 +157,3 @@ p1 = Replace(5).replace_cards()
 #p1.replace_cards()
 
 print(p1)
-    
-   

@@ -36,4 +36,10 @@ class Deck(Card):
                 deck_of_cards.append(new_card)
                 number_of_suit.append(str(self.suit))
 ```
-The child class Deck inherites the Card class's arguments and establishes the functions assign_value() and create_deck().  assign_value() randomly generates numbers 
+The child class Deck inherited the Card class's arguments and establishes the functions assign_value() and create_deck().   assign_value() randomly generates numbers from 1 to 13 if the number is 1, 11, 12, or 13 we reassign those numbers as ace, jack, queen and king respectively (I omitted the other conversions from the code after ace for formatting purposes).  This is where the function get_number() is obtaining its numerical value.
+```
+deck_of_cards = []
+
+class Card:
+```
+The next challenge was generating the deck of cards.  This was handle with the create_deck() function in the Deck class.  What this function does is creates an empty list that will count the number of occurrences of a suit in the deck and pulls our generated card from the get_number() function.  The number_of_suit list is very important because this will be our counter to tell the program to stop generating cards of this suit.  We use the length of this list as a condition for the while loop we are about to implement.  the while loop checks to see if the new_card is in the deck or not.  If it is in the deck it reassigns the value of the card and checks again for any duplicates of the value.  If it isn't in the deck it appends the new card to the list deck_of_cards.  We created this list outside of our first function class Card because we will be using this list later in other classes.    

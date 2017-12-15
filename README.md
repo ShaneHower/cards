@@ -21,12 +21,7 @@ class Deck(Card):
         new_card = randint(1, 13)
         if new_card == 1:
             new_card = 'ace'
-        elif new_card == 11:
-            new_card = 'jack'
-        elif new_card == 12:
-            new_card = 'queen'
-        elif new_card == 13:
-            new_card = 'king'
+          ...
         return new_card
 
     def create_deck(self):

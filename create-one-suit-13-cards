@@ -2,11 +2,11 @@ import random
 from random import randint
 from collections import *
 
-def check_consecutive(x):
+def check(n, l):
+    subs = [l[i:i+n] for i in range(len(l)) if len(l[i:i+n]) == n]
+    return any([(sorted(sub) in range(min(l), max(l)+1)) for sub in subs])
     
     
-
-
 #this is important for jugding the hand a player recieves later
 class OrderedCounter(Counter, OrderedDict):
     pass
@@ -47,7 +47,7 @@ class Deck(Card):
                 new_card = self.get_number()
             else:
                 deck_of_cards.append(new_card)
-                number_of_suit.append(str(self.suit))        
+                number_of_suit.append(str(self.suit))
                 
             
     
@@ -81,7 +81,7 @@ class Replace(PlayerHand):
         print(hand)
         number_cards = int(input('how many cards would you like to discard?:'))
         if number_cards == 5:
-            hand = ['jack of hearts', 'jack of spades', ' 2 of hearts', '3 of diamonds', '4 of clubs']
+            hand = ['ace of clubs', '7 of clubs', 'ace of spades', '8 of hearts', '3 of clubs']
             #hand = self.get_hand()
         else:
             while x <= number_cards:
@@ -104,28 +104,33 @@ class Replace(PlayerHand):
         #had to create a new class OrderedCouter because Counter does not oreder the dictionary and therefore I can't isolate values using dictionary commands
         count_numbers = OrderedCounter(hand_numbers)
         count_suit = OrderedCounter(hand_suit)
-        print(count_numbers)
-        print(count_suit)
+        #print(count_numbers)
+        #print(count_suit)
+        #print(hand_suit)
         hand_reveal= []
         for i in hand_numbers:
             if count_numbers[i] == 2:
                 hand_reveal.append('2 of a kind!') 
                 hand_numbers.remove(i)
+                print(hand_numbers)
             elif count_numbers[i] == 3:
                 hand_reveal.append('3 of a kind!')
                 hand_numbers.remove(i)
-                hand_numbers.remove(i)
+                hand_numbers.remove(i)              
             elif count_numbers[i] == 4:
                 hand_reveal.append('4 of a kind!')
                 break
-            elif count_suit[i]== 4:
+        for i in hand_suit:
+            if count_suit[i] == 5:
                 hand_reveal.append('Flush!')
+                break
+                    
             
         print(hand_reveal)
         if len(hand_reveal)>1:
             if (hand_reveal[0] == '2 of a kind!' and hand_reveal[1] == '3 of a kind!') or (hand_reveal[0] == '3 of a kind!' and hand_reveal[1] == '2 of a kind!'):
                 print('Full House')
-            elif hand_reveal[0] == '2 of a kind!' and hand_reveal[1] =='2 of a kind':
+            elif hand_reveal[0] == '2 of a kind!' and hand_reveal[1] =='2 of a kind!':
                 print('2 Pair!')
             elif (hand_reveal[0] == 'Flush' and hand_reveal[1] == 'Straight') or (hand_reveal[0] == 'Straight' and hand_reveal[1] == 'Flush'):
                 print('Straight Flush!')
@@ -151,13 +156,5 @@ p1 = Replace(5).replace_cards()
 #p1.replace_cards()
 
 print(p1)
-
-
-
-
-
-
-
-        
     
    

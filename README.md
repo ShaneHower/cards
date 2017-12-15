@@ -13,3 +13,27 @@ class Card:
         return new_card
  
  ```
+I started the program with a class called Card that took only a suit as an argument (i.e hearts, spades, diamonds, clubs).  This class has a function get_number() that assigns the variable self.number by calling a different function assign_value() and concatenates the strings so we are left with a card in the format of 'number of suit'.  This function just created a card.  Now you may notice that the function assign_value does not exist.  We create this function below in a child class called Deck.
+```
+class Deck(Card):
+    def __init__(self, suit):
+        Card.__init__(self, suit)
+
+    def assign_value(self):
+        new_card = randint(1, 13)
+        if new_card == 1:
+            new_card = 'ace'
+        ....
+        return new_card
+
+    def create_deck(self):
+        number_of_suit = []
+        new_card = self.get_number()
+        while len(number_of_suit) <= 12:
+            if new_card in deck_of_cards:
+                new_card = self.get_number()
+            else:
+                deck_of_cards.append(new_card)
+                number_of_suit.append(str(self.suit))
+```
+The child class Deck inherites the Card class's arguments and establishes the functions assign_value() and create_deck().  assign_value() randomly generates numbers 

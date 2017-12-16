@@ -43,3 +43,23 @@ deck_of_cards = []
 class Card:
 ```
 The next challenge was generating the deck of cards.  This was handled through the create_deck() function in the Deck class.  What this function does is creates an empty list for the purpose of counting the number of occurrences of a suit. It also pulls our generated card from the get_number() function.  The number_of_suit list is very important because this will be our counter to tell the program to stop generating cards once the number of suits exceeds 13.  We use the length of this list as a condition for the while loop we are about to implement.  the while loop checks to see if the new_card is in the deck.  If it is in the deck, it reassigns the value of the card and checks again for any duplicates of the value.  If it isn't in the deck it appends the new card to the list deck_of_cards.  We created this list outside of our first function class Card because we will be using this list later in other classes.    
+
+## Dealing a Hand to the User
+```
+class PlayerHand:
+    def __init__(self, card_num):
+        self.card_num = card_num
+
+    def get_hand(self):
+        hand = []
+        draw_card = random.choice(deck_of_cards)
+        while len(hand) < int(self.card_num):
+            if draw_card not in hand:
+                hand.append(draw_card)
+                #takes cards out of deck so they cannote be repicked during the next draw phase.
+                deck_of_cards.remove(draw_card)
+            else:
+                draw_card = random.choice(deck_of_cards)
+        return hand
+```
+We create a new class called PlayerHand that takes a number as it's argument.  The number signifies how many cards the user will be dealt.  In PlayerHand we establish a class called get_hand() which creates an empty list (which is the user's hand) and assigns a random element from deck_of_cards to the variable draw_card.  While the player's hand is less than the number of cards we will deal to them, we append draw_card to the empty list hand and remove the value from deck_of_cards (removing the value will become important later).

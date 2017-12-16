@@ -88,7 +88,7 @@ class Replace(PlayerHand):
         print(hand)
 ```
 In Poker, an important aspect of the game is being able to discard unwanted cards.  To add this aspect of the game into our program we create yet another class called Replace which is a child class of PlayerHand.  In Replace we define a function called replace_cards() which asks the user how many cards they would like to discard from their hand.  We store this integer in the variable number_cards.  If they wish to discard their entire hand we call the function get_hand() once again and replace all the cards.  Otherwise we create another while loop that tracks the number of times we've entered a card value.  Inside the loop we remove the unwanted card from hand and append a new value from the deck.  This is why we removed the cards from the deck in the get_hand() function.  It ensures we will not pick a card that has already been dealt.  Once the number of entries is equal to the number the user inputted into number_cards variable the loop ends. 
-## Interpreting a Players Hand
+## Interpreting the Players Hand
 ```
     def replace_cards(self):
     ....above code here....
@@ -191,5 +191,27 @@ In Poker, an important aspect of the game is being able to discard unwanted card
         else:
             print('you have nothing')
 ```
-This was the most difficult part of constructing this program.  Telling the computer how to interpret the players final hand was an interesting challenge.  Keep in mind that all of the code above is contained in the replace_cards() function.  This allows the player's hand to be interpreted the moment they choose the cards they wish to discard
+This was the most difficult part of constructing this program.  Telling the computer how to interpret the players final hand was an interesting challenge.  Keep in mind that all of the code above is contained in the replace_cards() function.  This allows the player's hand to be interpreted the moment they choose the cards they wish to discard.
+We have to tell the computer how to identify the 9 possible hands a player can play.  I started first with the multiple occurence hands (2 of a kind, 3 of a kind, 4 of a kind, 2 pair, and full house).  I first split joined the list hand into a string so that I could split it and eliminate the 'of' portion of each card (example of a card: 2 of spades).  Once the 'of' element was eliminated I joined the list once again and split it once more so that all of my suits and numbers were seperated.  I then sliced this list into two new lists, one containing only the number values of the cards and the other containing only the suits.
 
+```
+       # join the list into a string then split the string to get rid of 'of'. rejoin and resplit to isolate words.
+        hand = ' '.join(hand)
+        hand = hand.split('of')
+        hand = ' '.join(hand)
+        # this is the hand without the ofs
+        hand = hand.split()
+        # now split into two new lists one containing only the number values.  Another containing only suits
+        hand_numbers = hand[0::2]
+        hand_suit = hand[1::2]
+```
+I then needed a way to count the number of occurrences of each element in the list.  By doing this I would be able to easily tell the computer what kind of multiple occurence hand the player has.  This proved a little tricky.  I original used the Counter() function which creates a dictionary of each element and their occurrences.  The problem was that Counter is an unordered dictionary so I was unable to get specific values in the dictionary.  To fix this problem I needed to create a new class that was a child of both Counter and OrderedDict which allowed me to implement both functions simultaneously.  
+
+```
+class OrderedCounter(Counter, OrderedDict):
+    pass
+```
+```
+        count_numbers = OrderedCounter(hand_numbers)
+        count_suit = OrderedCounter(hand_suit)
+```

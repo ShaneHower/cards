@@ -76,7 +76,7 @@ class Replace(PlayerHand):
         hand = self.get_hand()
         print(hand)
         number_cards = int(input('how many cards would you like to discard?:'))
-        if number_cards == 5:
+        if number_cards == self.card_num:
             #hand = ['3 of spades', '3 of clubs', '3 of hearts', '2 of diamonds', '2 of spades']
             hand = self.get_hand()
         else:

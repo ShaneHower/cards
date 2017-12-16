@@ -63,3 +63,30 @@ class PlayerHand:
         return hand
 ```
 We create a new class called PlayerHand that takes a number as it's argument.  The number signifies how many cards the user will be dealt.  In PlayerHand we establish a class called get_hand() which creates an empty list (which is the user's hand) and assigns a random element from deck_of_cards to the variable draw_card.  While the player's hand is less than the number of cards we will deal to them, we append draw_card to the empty list hand and remove the value from deck_of_cards (removing the value will become important later).
+## Discarding
+```
+class Replace(PlayerHand):
+    def __init__(self, card_num):
+        PlayerHand.__init__(self, card_num)
+
+    def replace_cards(self):
+        x = 1
+        hand = self.get_hand()
+        print(hand)
+        number_cards = int(input('how many cards would you like to discard?:'))
+        if number_cards == self.card_num:
+            #hand = ['3 of spades', '3 of clubs', '3 of hearts', '2 of diamonds', '2 of spades']
+            hand = self.get_hand()
+        else:
+            while x <= number_cards:
+                replace_card = input('which card would you like to replace (one at a time please)?')
+                for i in hand:
+                    if replace_card == i:
+                        hand.remove(i)
+                        hand.append(random.choice(deck_of_cards))
+                x = x + 1
+        print(hand)
+```
+In Poker, an important aspect of the game is being able to discard unwanted cards.  To add this aspect of the game into our program we create yet another class called Replace which is a child class of PlayerHand.  In Replace we define a function called replace_cards() which asks the user how many cards they would like to discard from their hand.  We store this integer in the variable number_cards.  If they wish to discard their entire hand we call the function get_hand() once again and replace all the cards.  Otherwise we create another while loop that tracks the number of times we've entered a card value.  Inside the loop we remove the unwanted card from hand and append a new value from the deck.  This is why we removed the cards from the deck in the get_hand() function.  It ensures we will not pick a card that has already been dealt.  Once the number of entries is equal to the number the user inputted into number_cards variable the loop ends. 
+
+

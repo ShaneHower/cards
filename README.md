@@ -13,7 +13,7 @@ class Card:
         return new_card
  
  ```
-I started the program with a class called Card that took only a suit as an argument (i.e hearts, spades, diamonds, clubs).  This class has a function get_number() that assigns the variable self.number by calling a different function assign_value() and concatenates the strings so we are left with a card in the format of 'number of suit'.  This function just created a card.  Now you may notice that the function assign_value does not exist.  We create this function below in a child class called Deck.
+I started the program with a class called Card that took only a suit as an argument (i.e hearts, spades, diamonds, clubs).  This class has a function get_number() that assigns the variable self.number by calling a different function assign_value(). get_number will concatenate the strings self.number, 'of', and self.suit so we are left with a card in this format: 'number of suit'.  Now you may notice that the function assign_value does not exist.  We create this function below in a child class called Deck.
 ```
 class Deck(Card):
     def __init__(self, suit):

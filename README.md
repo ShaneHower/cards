@@ -215,3 +215,25 @@ class OrderedCounter(Counter, OrderedDict):
         count_numbers = OrderedCounter(hand_numbers)
         count_suit = OrderedCounter(hand_suit)
 ```
+Now that I have two new dictionaries (count_numbers and count_suit) I can start checking for multiple occurence hands.  To check for number duplicates I looped through the hand_numbers list.  the loop would check each value in hand_numbers and find the values of those entries in count_numbers.  I then just put the different hand options through conditional statements to assign the hand_value (another empty list, this will become important later.  I did the same for the 'flush' condition.
+```
+ #all hands that count reoccurence (2 of a kind, 3 of a kind, 4 of a kind)
+        for i in hand_numbers:
+            if count_numbers[i] == 2:
+                hand_reveal.append('2 of a kind!')
+                hand_numbers.remove(i)
+                count_numbers = OrderedCounter(hand_numbers)
+            #below can probably be done in a cleaner way. it adds '3 of a kind twice into hand_reveal so I had to right a conversion in if len(hand_reveal) > 1
+            elif count_numbers[i] == 3:
+                hand_reveal.append('3 of a kind!')
+                hand_numbers.remove(i)
+            elif count_numbers[i] == 4:
+                hand_reveal.append('4 of a kind!')
+                break
+
+        #Flush
+        for i in hand_suit:
+            if count_suit[i] == 5:
+                hand_reveal.append('Flush!')
+                break
+```

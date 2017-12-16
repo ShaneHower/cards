@@ -90,10 +90,6 @@ class Replace(PlayerHand):
 In Poker, an important aspect of the game is being able to discard unwanted cards.  To add this aspect of the game into our program we create yet another class called Replace which is a child class of PlayerHand.  In Replace we define a function called replace_cards() which asks the user how many cards they would like to discard from their hand.  We store this integer in the variable number_cards.  If they wish to discard their entire hand we call the function get_hand() once again and replace all the cards.  Otherwise we create another while loop that tracks the number of times we've entered a card value.  Inside the loop we remove the unwanted card from hand and append a new value from the deck.  This is why we removed the cards from the deck in the get_hand() function.  It ensures we will not pick a card that has already been dealt.  Once the number of entries is equal to the number the user inputted into number_cards variable the loop ends. 
 ## Interpreting the Players Hand
 ```
-    def replace_cards(self):
-    ....above code here....
-    
-    
        # join the list into a string then split the string to get rid of 'of'. rejoin and resplit to isolate words.
         hand = ' '.join(hand)
         hand = hand.split('of')
@@ -103,109 +99,9 @@ In Poker, an important aspect of the game is being able to discard unwanted card
         # now split into two new lists one containing only the number values.  Another containing only suits
         hand_numbers = hand[0::2]
         hand_suit = hand[1::2]
-
-        # had to create a new class OrderedCouter because Counter does not oreder the dictionary and therefore I can't
-        # isolate values using dictionary commands.  OrderedCounter is necessary because it counts the number of occurences in a hand.
-        # splitting my hand into two new hands (one containing suits and one containing numbers) will allow me to check for a flush and
-        #the recurrence of card numbers later.
-        count_numbers = OrderedCounter(hand_numbers)
-        count_suit = OrderedCounter(hand_suit)
-
-        #this will be used to determine our hand at the end
-        hand_reveal = []
-        #this will be used to read if we have a straight or not
-        read_straight= []
-
-        #to check for a straight we have to convert the royal suits back into numbers
-        for i in hand_numbers:
-            if i == 'jack':
-                read_straight.append(11)
-            elif i == 'queen':
-                read_straight.append(12)
-            elif i == 'king':
-                read_straight.append(13)
-            elif i == 'ace':
-                read_straight.append(14)
-            else:
-                read_straight.append(int(i))
-
-        #accounts for the aces ability to be a 1 or 14 depending on its position in a straight
-        for i in read_straight:
-            if i == 14:
-                if min(read_straight) == 2:
-                    read_straight.remove(14)
-                    read_straight.append(1)
-
-        #if there are no duplicates, the list would have to be conesecutive if the difference between the highest and lowest number
-        #is the number of cards in hand minus 1(so this would be 4 if we had a 5 card draw). the first statment before 'and' checks the difference
-        #the second statment checks for any duplicates and if none come up it returns true.
-        if max(read_straight) - min(read_straight) == (self.card_num - 1)  and (not any(read_straight.count(x) > 1 for x in read_straight)):
-            if min(read_straight) == 10 and max(read_straight) == 14:
-                hand_reveal.append('Royal')
-            else:
-                hand_reveal.append('Straight!')
-
-        #all hands that count reoccurence (2 of a kind, 3 of a kind, 4 of a kind)
-        for i in hand_numbers:
-            if count_numbers[i] == 2:
-                hand_reveal.append('2 of a kind!')
-                hand_numbers.remove(i)
-                count_numbers = OrderedCounter(hand_numbers)
-            #below can probably be done in a cleaner way. it adds '3 of a kind twice into hand_reveal so I had to right a conversion in if len(hand_reveal) > 1
-            elif count_numbers[i] == 3:
-                hand_reveal.append('3 of a kind!')
-                hand_numbers.remove(i)
-            elif count_numbers[i] == 4:
-                hand_reveal.append('4 of a kind!')
-                break
-
-        #Flush
-        for i in hand_suit:
-            if count_suit[i] == 5:
-                hand_reveal.append('Flush!')
-                break
-
-        #I made a list that holds all the valid hands a player has.  Below is where it will combine hands to give what a player actually has. (i.e. a royal straight and a flush is a royal flush)
-        if len(hand_reveal) > 1:
-            if (hand_reveal[0] == '2 of a kind!' and hand_reveal[1] == '3 of a kind!' and hand_reveal[2] == '3 of a kind!') or (
-                    hand_reveal[0] == '3 of a kind!' and hand_reveal[1] == '3 of a kind!' and hand_reveal[2] == '2 of a kind!'):
-                print('Full House!')
-            elif hand_reveal[0] == '2 of a kind!' and hand_reveal[1] == '2 of a kind!':
-                print('2 Pair!')
-            elif (hand_reveal[0] == 'Flush!' and hand_reveal[1] == 'Straight!') or (
-                    hand_reveal[0] == 'Straight!' and hand_reveal[1] == 'Flush!'):
-                print('Straight Flush!')
-            elif (hand_reveal[0] == 'Flush!' and hand_reveal[1] == 'Royal') or (
-                    hand_reveal[0] == 'Royal' and hand_reveal[1] == 'Flush!'):
-                print('Royal Flush!')
-            #this is how i resolved the duplicates of '3 of a kind!'
-            elif hand_reveal[0] == '3 of a kind!' and hand_reveal[1] == '3 of a kind!':
-                print('3 of a kind!')
-
-        elif len(hand_reveal) == 1:
-            if hand_reveal[0] == 'Royal':
-                print('Straight!')
-            else:
-                print(''.join(hand_reveal))
-
-        else:
-            print('you have nothing')
 ```
 This was the most difficult part of constructing this program.  Telling the computer how to interpret the players final hand was an interesting challenge.  Keep in mind that all of the code above is contained in the replace_cards() function.  This allows the player's hand to be interpreted the moment they choose the cards they wish to discard.
 We have to tell the computer how to identify the 9 possible hands a player can play.  I started first with the multiple occurence hands (2 of a kind, 3 of a kind, 4 of a kind, 2 pair, and full house).  I first split joined the list hand into a string so that I could split it and eliminate the 'of' portion of each card (example of a card: 2 of spades).  Once the 'of' element was eliminated I joined the list once again and split it once more so that all of my suits and numbers were seperated.  I then sliced this list into two new lists, one containing only the number values of the cards and the other containing only the suits.
-
-```
-       # join the list into a string then split the string to get rid of 'of'. rejoin and resplit to isolate words.
-        hand = ' '.join(hand)
-        hand = hand.split('of')
-        hand = ' '.join(hand)
-        # this is the hand without the ofs
-        hand = hand.split()
-        # now split into two new lists one containing only the number values.  Another containing only suits
-        hand_numbers = hand[0::2]
-        hand_suit = hand[1::2]
-```
-I then needed a way to count the number of occurrences of each element in the list.  By doing this I would be able to easily tell the computer what kind of multiple occurence hand the player has.  This proved a little tricky.  I original used the Counter() function which creates a dictionary of each element and their occurrences.  The problem was that Counter is an unordered dictionary so I was unable to get specific values in the dictionary.  To fix this problem I needed to create a new class that was a child of both Counter and OrderedDict which allowed me to implement both functions simultaneously.  
 
 ```
 class OrderedCounter(Counter, OrderedDict):
@@ -215,7 +111,8 @@ class OrderedCounter(Counter, OrderedDict):
         count_numbers = OrderedCounter(hand_numbers)
         count_suit = OrderedCounter(hand_suit)
 ```
-Now that I have two new dictionaries (count_numbers and count_suit) I can start checking for multiple occurence hands.  To check for number duplicates I looped through the hand_numbers list.  the loop would check each value in hand_numbers and find the values of those entries in count_numbers.  I then just put the different hand options through conditional statements to assign the hand_value (another empty list, this will become important later.  I did the same for the 'flush' condition.
+I then needed a way to count the number of occurrences of each element in the list.  By doing this I would be able to easily tell the computer what kind of multiple occurence hand the player has.  This proved a little tricky.  I original used the Counter() function which creates a dictionary of each element and their occurrences.  The problem was that Counter is an unordered dictionary so I was unable to get specific values in the dictionary.  To fix this problem I needed to create a new class that was a child of both Counter and OrderedDict which allowed me to implement both functions simultaneously.  
+
 ```
  #all hands that count reoccurence (2 of a kind, 3 of a kind, 4 of a kind)
         for i in hand_numbers:
@@ -237,3 +134,5 @@ Now that I have two new dictionaries (count_numbers and count_suit) I can start 
                 hand_reveal.append('Flush!')
                 break
 ```
+
+Now that I have two new dictionaries (count_numbers and count_suit) I can start checking for multiple occurence hands.  To check for number duplicates I looped through the hand_numbers list.  the loop would check each value in hand_numbers and find the values of those entries in count_numbers.  I then just put the different hand options through conditional statements to assign the hand_value (another empty list, this will become important later.  I did the same for the 'flush' condition.

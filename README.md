@@ -135,4 +135,4 @@ I then needed a way to count the number of occurrences of each element in the li
                 break
 ```
 
-Now that I have two new dictionaries (count_numbers and count_suit) I can start checking for multiple occurence hands.  To check for number duplicates I looped through the hand_numbers list.  the loop would check each value in hand_numbers and find the values of those entries in count_numbers.  I then just put the different hand options through conditional statements to assign the hand_value (another empty list, this will become important later.  I did the same for the 'flush' condition.
+Now that I have two new dictionaries (count_numbers and count_suit) I can start checking for multiple occurence hands.  To check for number duplicates I looped through the hand_numbers list.  the loop would check each value in hand_numbers and find the values of those entries in count_numbers.  I then just put the different hand options through conditional statements to assign the hand_value (another empty list, this will become important later).  I did the same for the 'flush' condition.

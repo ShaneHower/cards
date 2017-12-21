@@ -3,115 +3,120 @@ from random import randint
 from collections import *
 
 
-# this is important for jugding the hand a player recieves later
+
+
+
+
 class OrderedCounter(Counter, OrderedDict):
     pass
 
-
-deck_of_cards = []
-
-
 class Card:
-    def __init__(self, suit):
+    def __init__(self, number, suit):
+        self.number = number
         self.suit = suit
-        self.number = 0
-
-    def get_number(self):
-        self.number = self.assign_value()
-        new_card = str(self.number) + ' of ' + str(self.suit)
-        return new_card
-
-
-class Deck(Card):
-    def __init__(self, suit):
-        Card.__init__(self, suit)
-
-    def assign_value(self):
-        new_card = randint(1, 13)
-        if new_card == 1:
-            new_card = 'ace'
-        elif new_card == 11:
-            new_card = 'jack'
-        elif new_card == 12:
-            new_card = 'queen'
-        elif new_card == 13:
-            new_card = 'king'
-        return new_card
-
-    def create_deck(self):
-        number_of_suit = []
-        new_card = self.get_number()
-        while len(number_of_suit) <= 12:
-            if new_card in deck_of_cards:
-                new_card = self.get_number()
-            else:
-                deck_of_cards.append(new_card)
-                number_of_suit.append(str(self.suit))
-                
-
+    def __str__(self):
+        return str(self.number) + ' of ' + str(self.suit)
+class Deck:
+    def __init__(self):
+        self.deck = []
+        for suit in ['diamonds', 'hearts', 'clubs', 'spades']:
+            for number in range(1,14):
+                if number == 1:
+                    number = 'ace'
+                elif number == 11:
+                    number = 'jack'
+                elif number == 12:
+                    number = 'queen'
+                elif number == 13:
+                    number = 'king'
+                new_card = Card(number, suit)
+                self.deck.append(str(new_card))
+    def get_list(self):
+        return self.deck
 
 class PlayerHand:
-    def __init__(self, card_num):
-        self.card_num = card_num
+    def __init__(self):
+        self.hand =[]
+        draw_card = random.choice(Deck().get_list())
+        while len(self.hand) < 5:
+            if draw_card not in self.hand:
+                self.hand.append(draw_card)
+            else:
+                draw_card = random.choice(Deck().get_list())
 
     def get_hand(self):
-        hand = []
-        draw_card = random.choice(deck_of_cards)
-        while len(hand) < int(self.card_num):
-            if draw_card not in hand:
-                hand.append(draw_card)
-                #takes cards out of deck so they cannote be repicked during the next draw phase.
-                deck_of_cards.remove(draw_card)
-            else:
-                draw_card = random.choice(deck_of_cards)
-        return hand
+        return self.hand
 
-
-class Replace(PlayerHand):
-    def __init__(self, card_num):
-        PlayerHand.__init__(self, card_num)
-
-    def replace_cards(self):
-        x = 1
-        hand = self.get_hand()
-        print(hand)
-        number_cards = int(input('how many cards would you like to discard?:'))
-        if number_cards == self.card_num:
-            #hand = ['3 of spades', '3 of clubs', '3 of hearts', '2 of diamonds', '2 of spades']
-            hand = self.get_hand()
+class PlayerDiscard:
+    def __init__(self):
+        self.new_hand = PlayerHand().get_hand()
+        print(self.new_hand)
+        number_of_discard = int(input('how many cards would you like to discard? '))
+        count = 1
+        if number_of_discard == 5:
+            self.new_hand = ['ace of clubs', '10 of spades', '10 of diamonds', 'jack of hearts', '10 of hearts']
+            #self.new_hand = PlayerHand().get_hand()
         else:
-            while x <= number_cards:
-                replace_card = input('which card would you like to replace (one at a time please)?')
-                for i in hand:
-                    if replace_card == i:
-                        hand.remove(i)
-                        hand.append(random.choice(deck_of_cards))
-                x = x + 1
-        print(hand)
+            while count <= number_of_discard:
+                replace_card = input('Which card would you like to discard (one at a time please)? ')
+                self.new_hand.remove(replace_card)
+                new_card = random.choice(Deck().get_list())
+                if new_card not in self.new_hand:
+                    self.new_hand.append(new_card)
+                    count = count + 1
+                else:
+                    new_card = random.choice(Deck().get_list())
+        print(self.new_hand)
 
-        # join the list into a string then split the string to get rid of 'of'. rejoin and resplit to isolate words.
-        hand = ' '.join(hand)
+    def get_final_hand(self):
+        return self.new_hand
+
+class SplitHand():
+    def __init__(self):
+        self.player_hand = PlayerDiscard().get_final_hand()
+        hand = ' '.join(self.player_hand)
         hand = hand.split('of')
         hand = ' '.join(hand)
-        # this is the hand without the ofs
-        hand = hand.split()
-        # now split into two new lists one containing only the number values.  Another containing only suits
-        hand_numbers = hand[0::2]
+        self.hand = hand.split()
+
+
+    def get_split_hand(self):
+        return self.hand
+
+
+class Game:
+    def __init__(self):
+        hand = SplitHand().get_split_hand()
+        print(hand)
+        hand_numbers = hand[::2]
         hand_suit = hand[1::2]
-
-        # had to create a new class OrderedCouter because Counter does not oreder the dictionary and therefore I can't
-        # isolate values using dictionary commands.  OrderedCounter is necessary because it counts the number of occurences in a hand.
-        # splitting my hand into two new hands (one containing suits and one containing numbers) will allow me to check for a flush and
-        #the recurrence of card numbers later.
-        count_numbers = OrderedCounter(hand_numbers)
-        count_suit = OrderedCounter(hand_suit)
-
-        #this will be used to determine our hand at the end
+        number_count = OrderedCounter(hand_numbers)
+        suit_count = OrderedCounter(hand_suit)
         hand_reveal = []
-        #this will be used to read if we have a straight or not
-        read_straight= []
+        read_straight = []
 
-        #to check for a straight we have to convert the royal suits back into numbers
+        #multiple occurrence hands
+        for i in hand_numbers:
+            if number_count[i] == 2:
+                hand_reveal.append('2 of a kind!')
+                hand_numbers.remove(i)
+                number_count = OrderedCounter(hand_numbers)
+            # below might be an issue for 3 of a kind it'll append 3 of a kind twice to hand_reveal
+            elif number_count[i] == 3:
+                hand_reveal.append('3 of a kind!')
+                hand_numbers.remove(i)
+            elif number_count[i] == 4:
+                hand_reveal.append('4 of a kind!')
+                break
+        #Flush
+        for i in hand_suit:
+            if suit_count[i] == 5:
+                hand_reveal.append('Flush!')
+                break
+
+        #straight
+        #print(hand_numbers)
+        #print(hand_suit)
         for i in hand_numbers:
             if i == 'jack':
                 read_straight.append(11)
@@ -124,48 +129,30 @@ class Replace(PlayerHand):
             else:
                 read_straight.append(int(i))
 
-        #accounts for the aces ability to be a 1 or 14 depending on its position in a straight
+        # accounts for the aces ability to be a 1 or 14 depending on its position in a straight
         for i in read_straight:
             if i == 14:
                 if min(read_straight) == 2:
                     read_straight.remove(14)
                     read_straight.append(1)
 
-        #if there are no duplicates, the list would have to be conesecutive if the difference between the highest and lowest number
-        #is the number of cards in hand minus 1(so this would be 4 if we had a 5 card draw). the first statment before 'and' checks the difference
-        #the second statment checks for any duplicates and if none come up it returns true.
-        if max(read_straight) - min(read_straight) == (self.card_num - 1)  and (not any(read_straight.count(x) > 1 for x in read_straight)):
+        # if there are no duplicates, the list would have to be conesecutive if the difference between the highest and lowest number
+        # is the number of cards in hand minus 1(so this would be 4 if we had a 5 card draw). the first statment before 'and' checks the difference
+        # the second statment checks for any duplicates and if none come up it returns true.
+        ##print(read_straight)
+        if max(read_straight) - min(read_straight) == (4) and (not any(read_straight.count(x) > 1 for x in read_straight)):
             if min(read_straight) == 10 and max(read_straight) == 14:
                 hand_reveal.append('Royal')
             else:
                 hand_reveal.append('Straight!')
-
-        #all hands that count reoccurence (2 of a kind, 3 of a kind, 4 of a kind)
-        for i in hand_numbers:
-            if count_numbers[i] == 2:
-                hand_reveal.append('2 of a kind!')
-                hand_numbers.remove(i)
-                count_numbers = OrderedCounter(hand_numbers)
-            #below can probably be done in a cleaner way. it adds '3 of a kind twice into hand_reveal so I had to right a conversion in if len(hand_reveal) > 1
-            elif count_numbers[i] == 3:
-                hand_reveal.append('3 of a kind!')
-                hand_numbers.remove(i)
-            elif count_numbers[i] == 4:
-                hand_reveal.append('4 of a kind!')
-                break
-
-        #Flush
-        for i in hand_suit:
-            if count_suit[i] == 5:
-                hand_reveal.append('Flush!')
-                break
-
-        #I made a list that holds all the valid hands a player has.  Below is where it will combine hands to give what a player actually has. (i.e. a royal straight and a flush is a royal flush)
-        if len(hand_reveal) > 1:
+        #read the combination hands (i.e. royal flush, full house, ...)
+        if len(hand_reveal) > 2:
             if (hand_reveal[0] == '2 of a kind!' and hand_reveal[1] == '3 of a kind!' and hand_reveal[2] == '3 of a kind!') or (
                     hand_reveal[0] == '3 of a kind!' and hand_reveal[1] == '3 of a kind!' and hand_reveal[2] == '2 of a kind!'):
                 print('Full House!')
-            elif hand_reveal[0] == '2 of a kind!' and hand_reveal[1] == '2 of a kind!':
+
+        elif len(hand_reveal)>1:
+            if hand_reveal[0] == '2 of a kind!' and hand_reveal[1] == '2 of a kind!':
                 print('2 Pair!')
             elif (hand_reveal[0] == 'Flush!' and hand_reveal[1] == 'Straight!') or (
                     hand_reveal[0] == 'Straight!' and hand_reveal[1] == 'Flush!'):
@@ -186,17 +173,7 @@ class Replace(PlayerHand):
         else:
             print('you have nothing')
 
+        #print(hand_reveal)
 
-c1 = Deck('clubs')
-c2 = Deck('spades')
-c3 = Deck('hearts')
-c4 = Deck('diamonds')
-
-c1.create_deck()
-c2.create_deck()
-c3.create_deck()
-c4.create_deck()
-
-p1 = Replace(5).replace_cards()
-
+Game()
 

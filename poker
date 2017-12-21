@@ -2,11 +2,6 @@ import random
 from random import randint
 from collections import *
 
-
-
-
-
-
 class OrderedCounter(Counter, OrderedDict):
     pass
 

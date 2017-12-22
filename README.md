@@ -153,7 +153,7 @@ class Game:
         # is the number of cards in hand minus 1(so this would be 4 if we had a 5 card draw). the first statment before 'and' 
         # checks the difference
         # the second statment checks for any duplicates and if none come up it returns true.
-        if max(read_straight) - min(read_straight) == (4) and (not any(read_straight.count(x) > 1 for x in read_straight)):
+        if max(read_straight) - min(read_straight) == (4) and any(read_straight.count(x) <= 1 for x in read_straight):
             if min(read_straight) == 10 and max(read_straight) == 14:
                 hand_reveal.append('Royal')
             else:

@@ -61,8 +61,7 @@ class PlayerDiscard:
         number_of_discard = int(input('how many cards would you like to discard? '))
         count = 1
         if number_of_discard == 5:
-            self.new_hand = ['ace of clubs', '10 of spades', '10 of diamonds', 'jack of hearts', '10 of hearts']
-            #self.new_hand = PlayerHand().get_hand()
+            self.new_hand = PlayerHand().get_hand()
         else:
             while count <= number_of_discard:
                 replace_card = input('Which card would you like to discard (one at a time please)? ')

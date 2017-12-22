@@ -10,7 +10,7 @@ class Card:
     def __str__(self):
         return str(self.number) + ' of ' + str(self.suit)
 ```
-creating the object card was first on the list.  This was a class that took two arguments number and suit and returned the string in the format: number of suit (i.e. 5 of hearts). 
+Creating the object card was first on the list.  This was a class that took two arguments number and suit and returned the string in the format: number of suit (i.e. 5 of hearts). 
 
 ## Creating the Deck
 ```

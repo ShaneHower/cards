@@ -95,7 +95,7 @@ class SplitHand():
     def get_split_hand(self):
         return self.hand
 ```
-This class's purpose is to split the array so I no longer have cards like '5 of hearts', but instead I have a list of numbers and suits which are seperate from one another.  This step is important because in order to interpret my hand I need to be able to isolate specific words in the list.  I needed to join the list into a string, then split it back into a list while taking out the 'of' values.  I then rejoined the list and split it once more so that every word was seperated.
+This class's purpose is to split the array so I no longer have cards like '5 of hearts', but instead I have a list of numbers and suits which are separate from one another.  This step is important because in order to interpret my hand I need to be able to isolate specific words in the list.  I needed to join the list into a string, then split it back into a list while taking out the 'of' values.  I then rejoined the list and split it once more so that every word was seperated. 
 
 ## Interpreting the Hand
 ```

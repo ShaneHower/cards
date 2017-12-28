@@ -98,6 +98,9 @@ class SplitHand():
 This class's purpose is to split the array so I no longer have cards like '5 of hearts', but instead I have a list of numbers and suits which are separate from one another.  This step is important because in order to interpret my hand I need to be able to isolate specific words in the list.  I needed to join the list into a string, then split it back into a list while taking out the 'of' values.  I then rejoined the list and split it once more so that every word was seperated. 
 
 ## Interpreting the Hand
+
+Disclaimer: I must admit this part of the program got a little messy.  There is definitely a more eloquent way of completing this specific aspect of the game which I'm still modifying.  However, this is the way in which I was able to get this program to work. 
+
 ```
 class Game:
     def __init__(self):
@@ -109,6 +112,12 @@ class Game:
         hand_reveal = []
         read_straight = []
 
+ ```
+The final step in completing the program is to interpret the players hand.  In order to do this we take the call the SplitHand class in a new class called Game.  SplitHand() gives Game() the players hand formatted so we only have the suits and number values (i.e. [ace, clubs, 4, clubs, jack, spades, 6, diamonds, 10, hearts]).  I took this split list and sliced it into two new lists, one containing only numbers and the other containing only suits.  I then used a class I created called OrderedCounter.  OrderedCounter takes the container Counter and orders it so that we can isolate values in the dictionary.
+
+### Interpreting Multiple Occurrences
+
+```
         #multiple occurrence hands
         for i in hand_numbers:
             if number_count[i] == 2:
@@ -128,8 +137,17 @@ class Game:
             if suit_count[i] == 5:
                 hand_reveal.append('Flush!')
                 break
+```
 
-        #straight
+The easiest hands to find were the multiple occurence hands (i.e. two of a kind, 3 of a kind, 4 of a kind, and flush).  I created a for loop that went through each value of hand_numbers and checked to see if that element had a count equal to 2, 3, and 4 using the number_count dictionary. There were some major issues with completing the task this way.  for instance if I have a 2 of a kind, say [3 of spades, 3 of clubs, ect.], it will read the '2 of a kind' value for the 3 of spades and read it again for the 3 of clubs resulting in '2 of a kind' being returned twice.  In order to fix this double count, after it reads the first '2 of a kind' it removes that card from the hand, thus returning only one value of '2 of a kind' and leaving the hand with 4 cards instead of 5.  I then append this value to a new empty list called hand_reveal, which will later be used to interpret the combinations of hand values.  
+
+I had a similar issue with the '3 of a kind' hand.  I was getting a '3 of a kind' value 3 times.  I was only able to eliminate one of these values thus appending 2 values of '3 of a kind' to hand_revel.  I later fixed the double value in a later portion of the Game class.
+
+interpreting a '4 of a kind' was much easier.  I could break the loop after finding one '4 of a kind.  This is because a hand that has a 4 of a kind can have no other hand, whereas a hand with a 3 of a kind could have a 2 of a kind as well and vice versa.  finding a flush was also very easy in comparison.  I just iterated through hand_suit instead of hand_count and broke the loop if there were was a count of 5 recurring suits.
+
+### Interpreting Straights
+```                           
+       #straight
         for i in hand_numbers:
             if i == 'jack':
                 read_straight.append(11)
@@ -156,7 +174,11 @@ class Game:
                 hand_reveal.append('Royal')
             else:
                 hand_reveal.append('Straight!')
-        #read the combination hands (i.e. royal flush, full house, ...)
+```       
+### Interpreting Combinations        
+       
+``` 
+       #read the combination hands (i.e. royal flush, full house, ...)
         if len(hand_reveal) > 2:
             if (hand_reveal[0] == '2 of a kind!' and hand_reveal[1] == '3 of a kind!' and hand_reveal[2] == '3 of a kind!') or (
                     hand_reveal[0] == '3 of a kind!' and hand_reveal[1] == '3 of a kind!' and hand_reveal[2] == '2 of a kind!'):
@@ -183,4 +205,4 @@ class Game:
 
         else:
             print('you have nothing')
- ```
+  ```

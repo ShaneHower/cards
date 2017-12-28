@@ -102,8 +102,7 @@ This class's purpose is to split the array so I no longer have cards like '5 of 
 class Game:
     def __init__(self):
         hand = SplitHand().get_split_hand()
-        print(hand)
-        hand_numbers = hand[::2]
+        hand_numbers = hand[0::2]
         hand_suit = hand[1::2]
         number_count = OrderedCounter(hand_numbers)
         suit_count = OrderedCounter(hand_suit)
@@ -123,6 +122,7 @@ class Game:
             elif number_count[i] == 4:
                 hand_reveal.append('4 of a kind!')
                 break
+
         #Flush
         for i in hand_suit:
             if suit_count[i] == 5:
@@ -148,17 +148,14 @@ class Game:
                 if min(read_straight) == 2:
                     read_straight.remove(14)
                     read_straight.append(1)
-
         # if there are no duplicates, the list would have to be conesecutive if the difference between the highest and lowest number
-        # is the number of cards in hand minus 1(so this would be 4 if we had a 5 card draw). the first statment before 'and' 
-        # checks the difference
+        # is the number of cards in hand minus 1(so this would be 4 if we had a 5 card draw). the first statment before 'and' checks the difference
         # the second statment checks for any duplicates and if none come up it returns true.
-        if max(read_straight) - min(read_straight) == (4) and any(read_straight.count(x) <= 1 for x in read_straight):
+        if max(read_straight) - min(read_straight) == (4) and len(hand_numbers) == 5 and not any(read_straight.count(x) > 1 for x in read_straight):
             if min(read_straight) == 10 and max(read_straight) == 14:
                 hand_reveal.append('Royal')
             else:
                 hand_reveal.append('Straight!')
-        
         #read the combination hands (i.e. royal flush, full house, ...)
         if len(hand_reveal) > 2:
             if (hand_reveal[0] == '2 of a kind!' and hand_reveal[1] == '3 of a kind!' and hand_reveal[2] == '3 of a kind!') or (
@@ -186,6 +183,4 @@ class Game:
 
         else:
             print('you have nothing')
-
-        print(hand_reveal)
  ```

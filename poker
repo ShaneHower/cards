@@ -49,8 +49,8 @@ class PlayerDiscard:
         number_of_discard = int(input('how many cards would you like to discard? '))
         count = 1
         if number_of_discard == 5:
-            self.new_hand = ['ace of clubs', '10 of spades', '10 of diamonds', 'jack of hearts', '10 of hearts']
-            #self.new_hand = PlayerHand().get_hand()
+            #self.new_hand = ['6 of clubs', '2 of clubs', '3 of clubs', '4 of clubs', '5 of clubs']
+            self.new_hand = PlayerHand().get_hand()
         else:
             while count <= number_of_discard:
                 replace_card = input('Which card would you like to discard (one at a time please)? ')
@@ -82,8 +82,7 @@ class SplitHand():
 class Game:
     def __init__(self):
         hand = SplitHand().get_split_hand()
-        print(hand)
-        hand_numbers = hand[::2]
+        hand_numbers = hand[0::2]
         hand_suit = hand[1::2]
         number_count = OrderedCounter(hand_numbers)
         suit_count = OrderedCounter(hand_suit)
@@ -103,6 +102,7 @@ class Game:
             elif number_count[i] == 4:
                 hand_reveal.append('4 of a kind!')
                 break
+
         #Flush
         for i in hand_suit:
             if suit_count[i] == 5:
@@ -110,8 +110,6 @@ class Game:
                 break
 
         #straight
-        #print(hand_numbers)
-        #print(hand_suit)
         for i in hand_numbers:
             if i == 'jack':
                 read_straight.append(11)
@@ -130,12 +128,10 @@ class Game:
                 if min(read_straight) == 2:
                     read_straight.remove(14)
                     read_straight.append(1)
-
         # if there are no duplicates, the list would have to be conesecutive if the difference between the highest and lowest number
         # is the number of cards in hand minus 1(so this would be 4 if we had a 5 card draw). the first statment before 'and' checks the difference
         # the second statment checks for any duplicates and if none come up it returns true.
-        ##print(read_straight)
-        if max(read_straight) - min(read_straight) == (4) and  any(read_straight.count(x) <= 1 for x in read_straight):
+        if max(read_straight) - min(read_straight) == (4) and len(hand_numbers) == 5 and not any(read_straight.count(x) > 1 for x in read_straight):
             if min(read_straight) == 10 and max(read_straight) == 14:
                 hand_reveal.append('Royal')
             else:
@@ -168,7 +164,5 @@ class Game:
         else:
             print('you have nothing')
 
-        #print(hand_reveal)
 
 Game()
-

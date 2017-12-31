@@ -34,7 +34,7 @@ class Deck:
         return self.deck
 ```
 
-The deck class created an empty list, self.deck, and used two for loops to input the suit and number into the class Card.  Before inputting the number and suit into Card, I converted 1, 11, 12, and 13 into the royal values.  Once the card was created it appended the new card to self.deck.  this class uses the get_list() function to return self.deck. 
+The Deck class created an empty list, self.deck, and used two for loops to input the suit and number into the class Card.  Before inputting the number and suit into Card, I converted 1, 11, 12, and 13 into the royal values.  Once the card was created it appended the new card to self.deck.  this class uses the get_list() function to return self.deck. 
 
 ## Creating Hand
 ```
@@ -79,7 +79,7 @@ class PlayerDiscard:
         return self.new_hand
 ```
 
-This class grabs the created hand from PlayerHand() and shows the hand to the user.  It then asks how many cards they would like to discard. if 5 is inputed, it creates a brand new hand.  If any other number is inputted it runs a while loop that asks which card will be discarded.  It removes the inputted name from the list and and grabs another random card from Deck() and appends it if this card is not present.  
+This class grabs the created hand from PlayerHand() and shows the hand to the user.  It then asks how many cards they would like to discard. if 5 is inputed, it creates a brand new hand.  If any other number is inputted it runs a while loop that asks which card will be discarded.  It removes the inputted name from the list and and grabs another random card from Deck() and appends it if the drawn card is not present.  
 
 ## Preparing the Hand for Interpretation
 ```
@@ -113,7 +113,7 @@ class Game:
         read_straight = []
 
  ```
-The final step in completing the program is to interpret the players hand.  In order to do this we take the call the SplitHand class in a new class called Game.  SplitHand() gives Game() the players hand formatted so we only have the suits and number values (i.e. [ace, clubs, 4, clubs, jack, spades, 6, diamonds, 10, hearts]).  I took this split list and sliced it into two new lists, one containing only numbers and the other containing only suits.  I then used a class I created called OrderedCounter.  OrderedCounter takes the container Counter and orders it so that we can isolate values in the dictionary.
+The final step in completing the program is to interpret the players hand.  In order to do this, the SplitHand class is inputted into a new class called Game.  SplitHand() gives Game() the players hand formatted so we only have the suits and number values (i.e. [ace, clubs, 4, clubs, jack, spades, 6, diamonds, 10, hearts]).  I took this split list and sliced it into two new lists, one containing only numbers and the other containing only suits.  I then used a class I created called OrderedCounter on the new lists.  OrderedCounter takes the container Counter and orders it so that we can isolate values in the dictionary.
 
 ### Interpreting Multiple Occurrences
 
@@ -143,7 +143,7 @@ The easiest hands to find were the multiple occurence hands (i.e. two of a kind,
 
 I had a similar issue with the '3 of a kind' hand.  I was getting a '3 of a kind' value 3 times.  I was only able to eliminate one of these values thus appending 2 values of '3 of a kind' to hand_revel.  I later fixed the double value in a later portion of the Game class.
 
-interpreting a '4 of a kind' was much easier.  I could break the loop after finding one '4 of a kind.  This is because a hand that has a 4 of a kind can have no other hand, whereas a hand with a 3 of a kind could have a 2 of a kind as well and vice versa.  finding a flush was also very easy in comparison.  I just iterated through hand_suit instead of hand_count and broke the loop if there were was a count of 5 recurring suits.
+interpreting a '4 of a kind' was much easier.  I could break the loop after finding one '4 of a kind'.  This is because a hand that has a 4 of a kind can have no other hand, whereas a hand with a 3 of a kind could contain a 2 of a kind and vice versa.  Finding a flush was also very easy in comparison.  I just iterated through hand_suit instead of hand_count and broke the loop if there was a count of 5 recurring suits.
 
 ### Interpreting Straights
 ```                           

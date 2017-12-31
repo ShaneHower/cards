@@ -212,3 +212,5 @@ The final step was determine if hand was a straight if it was a 'Royal' straight
         else:
             print('you have nothing')
   ```
+
+The last portion of this program was to interpret the combination hands (Full House, Royal Flush, ect.).  This was relatively easy.  I first inspected the list hand_reveal (this was the list that I was appending the hand values to, such as, two of a kind, flush, ect).  If the length of hand reveal was greater than 2, this would be my Full House.  This was because the value 3 of a kind was appended twice and 2 of a kind was appended once.  If the length was greater than 1, it could be my two pair, straight flush, royal flush, or 3 of a kind. Finally if the length of hand_reveal was equal to one it could be my royal straight (which prints straight to the user) or my two of a kind.  If there is nothing in the list the console prints 'you have nothing'.  

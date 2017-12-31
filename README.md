@@ -176,7 +176,9 @@ interpreting a '4 of a kind' was much easier.  I could break the loop after find
                 hand_reveal.append('Straight!')
 ```       
 Interpreting if a hand contained a straight was a little more challenging.  My algorithm for determining if numbers were consecutive was to subtract the minimum value from the maximum, if the difference was one less than the number of cards in hand (in our case four) and there were no duplicates of any cards, this would suggest that the numbers were consecutive.  This algorithm required me to convert the royal values back into number values.  An ace was somewhat tricky because it could have two values in straight, either 14 or 1.  In order to adjust for this variability I first converted the ace into the value 14, if the minimum value in the hand was 2 then I would re-assign the value of the ace as a one instead of a 14.
+
 Once all of the royal values were converted I could apply the algorithm.  Finding the difference of the max and the min was trivial, in order to check for duplicates I used the any() function.  This returned the value False if every number was unique in the list and True if any number had a duplicate (which is why the boolean operator not is used in front of this function).  One more conditioned had to be defined in order for this if statement to work properly (this being another result of the algorithm used and not very efficient).  I had to make sure the length of the hand was still five.  If I removed cards in the previous step to check for a two of a kind it could pass through the if statement after the duplicate was removed.  To avoid this bug the if statement needed the condition len(hand_numbers) == 5.
+
 The final step was determine if hand was a straight if it was a 'Royal' straight or not.  This was straightforward,  If the minimum was 10 and maximum was 14 then it was a royal straight if not it appended 'Straight!' to hand_reveal.
 
 ### Interpreting Combinations        
